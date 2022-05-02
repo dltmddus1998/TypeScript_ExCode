@@ -16,8 +16,13 @@ type StackNode = {
 class StackImpl implements Stack {
     // 내부에서 동일한 이름을 쓰는 경우 앞에 _(언더바)를 붙여주면 된다.
     private _size: number = 0;
+    
     // head는 stacknode를 가리킬수도 아닐수도 있음
     private head?: StackNode;
+
+    // 보통 constructor을 통해 size를 설정해놓는다.
+    constructor(private capacity: number) {}
+
     // getter만 있고 setter는 없기때문에 내부적으로만 변경할 수 있다.
     get size() {
         return this._size;
@@ -27,6 +32,9 @@ class StackImpl implements Stack {
     // 2. 새로운 node는 head가 가리키는 값을 가리키도록
     // 3. head가 새로운 값을 가리키도록
     push(value: string) {
+        if(this._size === this.capacity) {
+            throw new Error('Stack is full!');
+        }
         const node: StackNode = {
             value,
             // 2. 
@@ -51,7 +59,7 @@ class StackImpl implements Stack {
     }
 }
 
-const stack = new StackImpl();
+const stack = new StackImpl(10);
 stack.push('sy 1');
 stack.push('bob 2');
 stack.push('steve 3');
